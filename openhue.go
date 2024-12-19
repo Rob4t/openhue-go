@@ -167,7 +167,7 @@ func (r *RoomGet) GetServices() map[string]ResourceIdentifierRtype {
 //--------------------------------------------------------------------------------------------------------------------//
 
 func (h *Home) GetZoneById(zoneId string) (*RoomGet, error) {
-	resp, err := h.api.GetRoomWithResponse(context.Background(), zoneId)
+	resp, err := h.api.GetZoneWithResponse(context.Background(), zoneId)
 	if err != nil {
 		return nil, err
 	}
