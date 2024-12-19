@@ -281,6 +281,43 @@ func (h *Home) UpdateScene(sceneId string, body ScenePut) error {
 	return nil
 }
 
+//--------------------------------------------------------------------------------------------------------------------//
+// SMART SCENE
+//--------------------------------------------------------------------------------------------------------------------//
+
+func (h *Home) GetSmartScenes() (map[string]SmartSceneGet, error) {
+	resp, err := h.api.GetSmartScenesWithResponse(context.Background())
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HTTPResponse.StatusCode != http.StatusOK {
+		return nil, newApiError(resp)
+	}
+
+	data := *(*resp.JSON200).Data
+	scenes := make(map[string]SmartSceneGet)
+
+	for _, scene := range data {
+		scenes[*scene.Id] = scene
+	}
+
+	return scenes, nil
+}
+
+func (h *Home) UpdateSmartScene(sceneId string, body SmartScenePut) error {
+	resp, err := h.api.UpdateSmartSceneWithResponse(context.Background(), sceneId, body)
+	if err != nil {
+		return err
+	}
+
+	if resp.HTTPResponse.StatusCode != http.StatusOK {
+		return newApiError(resp)
+	}
+
+	return nil
+}
+
 //
 // Internal
 //
