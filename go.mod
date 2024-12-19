@@ -1,4 +1,4 @@
-module github.com/openhue/openhue-go
+module github.com/Rob4t/openhue-go
 
 go 1.21
 
