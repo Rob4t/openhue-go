@@ -139,12 +139,46 @@ func (h *Home) GetRooms() (map[string]RoomGet, error) {
 	return rooms, nil
 }
 
+func (h *Home) GetRoomById(roomId string) (*RoomGet, error) {
+	resp, err := h.api.GetRoomWithResponse(context.Background(), roomId)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HTTPResponse.StatusCode != http.StatusOK {
+		return nil, newApiError(resp)
+	}
+
+	data := *(*resp.JSON200).Data
+
+	return &data[0], nil
+}
+
 func (r *RoomGet) GetServices() map[string]ResourceIdentifierRtype {
 	services := make(map[string]ResourceIdentifierRtype)
 	for _, s := range *r.Services {
 		services[*s.Rid] = *s.Rtype
 	}
 	return services
+}
+
+//--------------------------------------------------------------------------------------------------------------------//
+// Zone
+//--------------------------------------------------------------------------------------------------------------------//
+
+func (h *Home) GetZoneById(zoneId string) (*RoomGet, error) {
+	resp, err := h.api.GetRoomWithResponse(context.Background(), zoneId)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HTTPResponse.StatusCode != http.StatusOK {
+		return nil, newApiError(resp)
+	}
+
+	data := *(*resp.JSON200).Data
+
+	return &data[0], nil
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
